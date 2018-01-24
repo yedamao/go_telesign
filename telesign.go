@@ -35,7 +35,7 @@ type Status struct {
 }
 
 type Error struct {
-	Code        string `json:"code"`
+	Code        int    `json:"code"`
 	Description string `json:"description"`
 }
 
