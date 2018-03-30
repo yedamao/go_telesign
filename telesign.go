@@ -12,6 +12,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -153,7 +154,17 @@ func (c *RestClient) post(resource string, params url.Values) (*Reponse, error) 
 	if err != nil {
 		return nil, err
 	}
-	data, _ := ioutil.ReadAll(resp.Body)
+
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	resp.Body.Close()
+
+	// check resp status
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("got telesign response %s %q", resp.Status, data)
+	}
 
 	var rep = new(Reponse)
 	err = json.Unmarshal(data, &rep)
