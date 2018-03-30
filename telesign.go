@@ -40,7 +40,7 @@ type Error struct {
 	Description string `json:"description"`
 }
 
-type Reponse struct {
+type Response struct {
 	ReferenceId string  `json:"reference_id"`
 	ResourceUrl string  `json:"resource_uri"`
 	SubResponse string  `json:"sub_resource"`
@@ -143,7 +143,7 @@ func (c *RestClient) newRequest(method, resource string, params url.Values) (*ht
 	return req, nil
 }
 
-func (c *RestClient) post(resource string, params url.Values) (*Reponse, error) {
+func (c *RestClient) post(resource string, params url.Values) (*Response, error) {
 
 	req, err := c.newRequest("POST", resource, params)
 	if err != nil {
@@ -166,13 +166,13 @@ func (c *RestClient) post(resource string, params url.Values) (*Reponse, error) 
 		return nil, fmt.Errorf("got telesign response %s %q", resp.Status, data)
 	}
 
-	var rep = new(Reponse)
-	err = json.Unmarshal(data, &rep)
+	var res = new(Response)
+	err = json.Unmarshal(data, &res)
 	if err != nil {
 		return nil, err
 	}
 
-	return rep, nil
+	return res, nil
 }
 
 func (c *RestClient) get(resource string, params url.Values) error {
@@ -190,7 +190,7 @@ func (c *RestClient) delete(resource string, params url.Values) error {
 	return nil
 }
 
-func (c *RestClient) Send(to, code, lang, template string) (*Reponse, error) {
+func (c *RestClient) Send(to, code, lang, template string) (*Response, error) {
 
 	content := url.Values{
 		"phone_number": {to},
