@@ -24,8 +24,8 @@ import (
 
 type RestClient struct {
 	customer_id   string // Your customer_id string associated with your account.
-	api_key       string //  Your api_key string associated with your account.
-	rest_endpoint string //
+	api_key       string // Your api_key string associated with your account.
+	rest_endpoint string
 	baseURL       *url.URL
 }
 
@@ -48,11 +48,11 @@ type Response struct {
 	Errors      []Error `json:"errors"`
 }
 
-func New(customer_id, api_key string) *RestClient {
+func New(endpoint, customer_id, api_key string) *RestClient {
 	return &RestClient{
 		customer_id:   customer_id,
 		api_key:       api_key,
-		rest_endpoint: "https://rest-ww.telesign.com",
+		rest_endpoint: endpoint,
 	}
 }
 
@@ -61,7 +61,6 @@ func computeHmac256(message string, secret string) string {
 	h := hmac.New(sha256.New, key)
 	h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
-
 }
 
 func (c *RestClient) generateTelesignHeaders(
